@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  <title>Indigo Global</title>
+  <style>  
+  .top-left {
+    position: absolute;
+    top: 8px;
+    left: 16px;
+  }
+  
+  
+  </style>
+  
+</head>
+
+<body>
+
+
+
+    <div>
+      <img src="{{ url_for('static', filename='images/Write.jpg')}}" class="img-fluid" alt="Responsive image" style="width:100%">
+      
+      
+    <a href="/" class="top-left" style="font-size:32px; font-weight: 1000; color:Black">HOME</a>
+    
+    
+    
+    
+    
+    </div>
+
+{%with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for color,msg in messages %}
+    <div class="alert alert-{{color}} alert-dismissible fade show" role="alert">
+      {{ msg }}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="container">
+  <a href="/dashboard/edit/0"><button class="btn btn-primary my-4 ">
+ New Article 
+</button> </a>
+
+
+<a href="/logout"><button class="btn btn-primary my-4 float-right" >
+  Logout
+ </button> </a>
+<table class="table table-dark my-4">
+  <thead>
+    <tr>
+      <th scope="col">Sno</th>
+      <th scope="col">Name</th>
+      <th scope="col">Department</th>
+      <th scope="col">Edit</th>
+      <th scope="col">Delete</th>
+    </tr>
+  </thead>
+  <tbody>
+
+    {%for Post in Posts%} 
+    <tr>
+      <th scope="row">{{Post.sno}}</th>
+      <td>{{Post.Name}}</td>
+      <td>{{Post.Department}}</td>
+      <td><a href="/dashboard/edit/{{Post.sno}}"><button class="btn btn-primary"> edit </button></a></td>
+      <td><a href="/delete/{{Post.sno}}"><button  class="btn btn-danger "> delete  </button></a></td>
+     
+    
+    </tr> {% endfor %}
+  </tbody>
+</table>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+    integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
