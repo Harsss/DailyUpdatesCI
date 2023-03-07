@@ -4,9 +4,8 @@ from re import search
 import math
 from datetime import datetime
 import os
-# # from werkzeug import secure_filename 
-# from werkzeug.utils import secure_filename 
-# from werkzeug.exceptions import RequestEntityTooLarge 
+
+
 app = Flask(__name__)
 import sqlite3
 #better encryption than using a secret key called "secret key"
@@ -33,24 +32,6 @@ def index():
     data = c.fetchall()
     return render_template('index.html',data=data)
     
-# @app.route("/Post/<string:post_slug>", methods=['GET'])
-# def post_route(post_slug):
-#      # checks that the post slug contains no characters other than alphanumeric ones and '-'
-#     # \W = any character not [A-Za-z0-9_]
-#     match = search(r"\W", post_slug)
-#     # if an unknown character found, redirect to homepage, else render post template with slug as Post.Slug
-#     if match:
-#         return redirect('/')
-#     else:
-#         Post = Posts.query.filter_by(slug=post_slug).first()
-#         # splits up the content by para so that it's easier to output in the template file. Then resets Post.PostContent to the generated list of paras
-#         contenttobreak = Post.PostContent.split('\n')
-#         Post.PostContent = contenttobreak
-#         return render_template('post.html', Post=Post)
-
-
-
-
 
 
 
@@ -62,7 +43,7 @@ def index():
 @app.route("/delete/<int:sno>", methods=['GET', 'POST'])
 def delete(sno):
     # Only Loggged In user can edit the post
-    if ('Admin' in session and session['Admin'] == "IndigoGlobal"):
+    if ('Admin' in session and session['Admin'] == "ClubIndigo"):
         sno = str(sno)
         post = DailyUpdates.query.filter_by(sno=sno).first()
         db.session.delete(post)
@@ -80,7 +61,7 @@ def Logout():
 @app.route("/dashboard/edit/<int:sno>", methods=['GET', 'POST'])
 def edit(sno):
     # Only Loggged In user can edit the post
-    if ('Admin' in session and session['Admin'] == "IndigoGlobal"):
+    if ('Admin' in session and session['Admin'] == "ClubIndigo"):
         # Checks if form is submitted
         if request.method == 'POST':
             # Vars hold intermediate values that are filled into the form
@@ -91,34 +72,9 @@ def edit(sno):
             now =  datetime.now()
             formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
             Dt = formatted_date
-            # PrevSlug = request.form.get('Slug')
-            # PrevImg = request.form.get('ImageFile')
 
-            # section checks if the slug entered is a repeat value
-            # **IDEA: Generate the slug instead of asking the user to enter**
-            # Loop goes through each post in the Posts table
-            # for post in DailyUpdates.query.all():
-                # Need to check if the new slug (PrevSlug) as a slug in a post that isn't the post being edited.
-                # using sno as the verifier since sno is the Primary Key of the table
-                # LOGIC:
-                # Post Ids match    and slugs match     > No Action
-                # Post Ids X match  and slugs match     > Error
-                # Post Ids match    and slugs X match   > No Action
-                # Post Ids X match  and slugs X match   > No Action
-                # pass
-                # if post.sno != sno and PrevSlug == post.slug:
-                #     # flash method passes the error to the redirected page
-                #     flash("Another post exists with the same slug, please modify")
-                #     return redirect('/dashboard/edit/'+str(sno))
-            # for creating a new post, basically uses the same page
-            # same pattern matching as in post URL, checking to make sure no special characters are allowed in the slug
-            # match = search(r"\W", PrevSlug)
-            # if character found, then flash error message
-            # if match:
-            #     flash(
-            #         "Cannot use any character other than A-Z, a-z, 0-9 and _ in the slug")
-                # return redirect('/dashboard/edit/'+str(sno))
-            # creates a new post, using the same edit page
+
+
             if sno==0:
                 # Post = DailyUpdates(PostTitle=PrevTitle, PostContent=PrevContent, ImgFile=PrevImg, PostedBy=Author, slug=PrevSlug, DT=Dt)
                 update = DailyUpdates(Name=Name, Department=Department, Description=Description, DT=Dt)
@@ -130,8 +86,6 @@ def edit(sno):
                 Post.Name  = Name
                 Post.Department= Department
                 Post.Description   = Description
-                # Post.ImgFile    = PrevImg
-                # Post.slug       = PrevSlug
                 Post.DT         = Dt
                 
                 db.session.commit()
@@ -147,27 +101,27 @@ def edit(sno):
 @app.route("/dashboard", methods=['GET', 'POST'])
 def dashboard():
  # checks if user already logged in
-    if ('Admin' in session and session['Admin'] == "IndigoGlobal"):
+    if ('Admin' in session and session['Admin'] == "ClubIndigo"):
         Post = DailyUpdates.query.all()
-        return render_template('adminPanel.html', Posts=Post)
+        return render_template('adminpanel.html', Posts=Post)
     # Checks if login form submitted
     if (request.method == 'POST'):
         UserName = request.form.get('UserName')
         Password = request.form.get('Password')
-        checkuse = "IndigoGlobal"
-        checkpass = "IndigoGlobal"
+        checkuse = "ClubIndigo"
+        checkpass = "ClubIndigo"
         if(UserName == checkuse and Password == checkpass):
             # Set The Session Variable
             session['Admin'] = UserName
             Post = DailyUpdates.query.all()
 
-            return render_template('adminPanel.html', Posts=Post)
+            return render_template('adminpanel.html', Posts=Post)
         else:
             # flash("Your UserName and Password didn't match","danger")
-            return render_template('signUp.html')
+            return render_template('signup.html')
     #    Ridirect To Admin Panel
     else:
-        return render_template('signUp.html')
+        return render_template('signup.html')
 
 if __name__=="__main__":
     app.run(debug=True)

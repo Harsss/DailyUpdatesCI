@@ -1,7 +1,10 @@
+
+
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Daily Report - Indigo Global Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <title>Daily Report - Club Indigo Team</title>
     <style>
       /* CSS for table layout */
       table {
@@ -27,19 +30,75 @@
         padding: 20px;
         text-align: center;
       }
+      .icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin-right: 5px;
+      }
+      
+      .calendar-icon {
+        background-image: url("https://cdn-icons-png.flaticon.com/512/3055/3055760.png");
+      }
+      
+      .user-icon {
+        background-image: url("https://cdn-icons-png.flaticon.com/512/2919/2919600.png");
+      }
+      
+      .department-icon {
+        background-image: url("https://cdn-icons-png.flaticon.com/512/874/874991.png");
+      }
+      
+      .details-icon {
+        background-image: url("https://cdn-icons-png.flaticon.com/512/61/61456.png");
+      }
+    
+
+      .ocean {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background-image: url('/static/images/uni1.jpg');
+        background-repeat: repeat;
+        animation: animate-ocean 20s ease-in-out infinite;
+      }
+      
+      @keyframes animate-ocean {
+        0% {
+          background-position: 0 0;
+        }
+        100% {
+          background-position: 100% 0;
+        }
+      }
+
     </style>
   </head>
   <body>
+    <div class="ocean"></div>
     <header>
-      <h1>Daily Report - Indigo Global Team</h1>
+      <h1>Daily Report - Club Indigo Team</h1>
     </header>
     <table>
       <thead>
         <tr>
-          <th>Date</th>
-          <th>Name</th>
-          <th>Department</th>
-          <th>Details</th>
+          <th>
+            <span class="icon calendar-icon"></span>Date
+            </th>
+            <th>
+            <span class="icon user-icon"></span>Name
+            </th>
+            <th>
+            <span class="icon department-icon"></span>Department
+            </th>
+            <th>
+            <span class="icon details-icon"></span>Details
+            </th>
         </tr>
       </thead>
       <tbody>
@@ -55,7 +114,20 @@
       </tbody>
     </table>
     <footer>
-      <p>Indigo Global Team - Daily Report</p>
+      <p>Club Indigo Team - Daily Report</p>
     </footer>
+
+
+  <script>
+      // JavaScript functionality to sort the table rows by date
+      const tbody = document.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+      rows.sort((a, b) => {
+        const dateA = new Date(a.cells[0].textContent);
+        const dateB = new Date(b.cells[0].textContent);
+        return dateB - dateA;
+      });
+      tbody.append(...rows);
+    </script>
   </body>
 </html>
